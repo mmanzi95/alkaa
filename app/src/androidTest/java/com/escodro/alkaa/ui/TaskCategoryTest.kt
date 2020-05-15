@@ -30,16 +30,22 @@ class TaskCategoryTest : AcceptanceTest<MainActivity>(MainActivity::class.java) 
         navigateToCategoryScreen()
         removeCategory(categoryName)
         events.navigateUp()
+        events.waitFor(3000)
         checkThat.listNotContainsItem(R.id.recyclerview_tasklist_list, taskName)
         checkThat.viewHasText(R.id.toolbar_title, R.string.task_list_default_title)
-        addTask("This is a new task in a new list")
+        val newTaskName = "This is a new task in a new list"
+        events.clickOnView(R.id.edittext_itemadd_description)
+        events.textOnView(R.id.edittext_itemadd_description, newTaskName)
+        events.pressImeActionButton(R.id.edittext_itemadd_description)
+        events.waitFor(3000)
+        checkThat.listContainsItem(R.id.recyclerview_tasklist_list, newTaskName)
     }
 
     private fun addTask(taskName: String) {
         events.clickOnView(R.id.edittext_itemadd_description)
         events.textOnView(R.id.edittext_itemadd_description, taskName)
         events.pressImeActionButton(R.id.edittext_itemadd_description)
-        events.waitFor(1000)
+        events.waitFor(2000)
         checkThat.listContainsItem(R.id.recyclerview_tasklist_list, taskName)
     }
 
